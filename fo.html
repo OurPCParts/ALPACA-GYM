@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ALPACA - Fitneszterem</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #2c3e50;
+            --accent-color: #f39c12;
+            --beige-bg: #f5e6d3;
+            --text-dark: #333;
+            --text-light: #666;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--beige-bg);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        /* Header és Navigáció */
+        header {
+            background-color: var(--primary-color);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 60px;
+            width: auto;
+        }
+
+        /* Hamburger Menu */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 5px;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background-color: white;
+            border-radius: 2px;
+            transition: 0.3s;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: 0.3s;
+            position: relative;
+        }
+
+        nav a:hover {
+            color: var(--accent-color);
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--accent-color);
+            transition: width 0.3s;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        /* Main Container */
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+            min-height: calc(100vh - 200px);
+        }
+
+        /* Oldal elrejtése */
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Kezdőoldal */
+        .hero {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #34495e 100%);
+            color: white;
+            padding: 4rem 2rem;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background-color: var(--accent-color);
+            color: white;
+            padding: 1rem 2rem;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: 0.3s;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .cta-button:hover {
+            background-color: #e67e22;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(243, 156, 18, 0.4);
+        }
+
+        /* Kártya elrendezés */
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .card {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .card h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        /* About Us */
+        .about-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+        }
+
+        .about-content h2 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            border-bottom: 3px solid var(--accent-color);
+            padding-bottom: 0.5rem;
+        }
+
+        .about-content p {
+            margin-bottom: 1rem;
+            color: var(--text-light);
+            line-height: 1.8;
+        }
+
+        /* Értékesítés oldal */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: 0.3s;
+        }
+
+        .product-card:hover {
+            transform: scale(1.05);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: white;
+        }
+
+        .product-info {
+            padding: 1.5rem;
+        }
+
+        .product-info h3 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .price {
+            font-size: 1.5rem;
+            color: var(--accent-color);
+            font-weight: bold;
+            margin: 1rem 0;
+        }
+
+        .add-to-cart {
+            width: 100%;
+            padding: 0.75rem;
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .add-to-cart:hover {
+            background-color: #e67e22;
+        }
+
+        /* Galéria */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .gallery-image {
+            width: 100%;
+            height: 250px;
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            color: white;
+            transition: 0.3s;
+        }
+
+        .gallery-item:hover .gallery-image {
+            transform: scale(1.1);
+        }
+
+        /* Kapcsolat oldal */
+        .contact-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .contact-form {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .contact-info {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+            font-weight: 500;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-family: inherit;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 5px rgba(243, 156, 18, 0.3);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 1rem;
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .submit-btn:hover {
+            background-color: #e67e22;
+        }
+
+        .contact-info h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .info-item {
+            margin-bottom: 1.5rem;
+        }
+
+        .info-item strong {
+            color: var(--accent-color);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--primary-color);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+        }
+
+        footer p {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Reszponzív design */
+        @media (max-width: 768px) {
+            .hamburger {
+                display: flex;
+            }
+
+            nav {
+                display: none;
+                position: absolute;
+                top: 70px;
+                left: 0;
+                right: 0;
+                background-color: var(--primary-color);
+                flex-direction: column;
+                padding: 1rem;
+                gap: 1rem;
+            }
+
+            nav.active {
+                display: flex;
+            }
+
+            nav ul {
+                flex-direction: column;
+                gap: 0;
+            }
+
+            nav a {
+                display: block;
+                padding: 0.75rem;
+            }
+
+            nav a::after {
+                display: none;
+            }
+
+            nav a:hover {
+                background-color: rgba(243, 156, 18, 0.2);
+                padding-left: 1.5rem;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .contact-container {
+                grid-template-columns: 1fr;
+            }
+
+            .logo img {
+                height: 50px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header-container {
+                padding: 0 0.5rem;
+            }
+
+            nav ul {
+                gap: 0.5rem;
+            }
+
+            main {
+                padding: 1rem 0.5rem;
+            }
+
+            .hero {
+                padding: 2rem 1rem;
+            }
+
+            .hero h1 {
+                font-size: 1.5rem;
+            }
+
+            .cards-container {
+                grid-template-columns: 1fr;
+            }
+
+            .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <img src="logo.jpg" alt="ALPACA Logo">
+            </div>
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <nav id="nav">
+                <ul>
+                    <li><a href="#" onclick="showPage('home')">Kezdőoldal</a></li>
+                    <li><a href="#" onclick="showPage('about')">Rólunk</a></li>
+                    <li><a href="#" onclick="showPage('products')">Értékesítés</a></li>
+                    <li><a href="#" onclick="showPage('gallery')">Galéria</a></li>
+                    <li><a href="#" onclick="showPage('contact')">Kapcsolat</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <!-- KEZDŐOLDAL -->
+        <div id="home" class="page active">
+            <div class="hero">
+                <h1>Üdvözöljük az ALPACA Fitnesztermben!</h1>
+                <p>Alakítsd át tested és erősítsd meg a lelkedet</p>
+                <button class="cta-button" onclick="showPage('products')">Fedezz fel több szolgáltatást</button>
+            </div>
+
+            <div class="cards-container">
+                <div class="card">
+                    <h3>💪 Edzőtervek</h3>
+                    <p>Személyre szabott edzőtervek, amelyeket tapasztalt edzők készíttek az Ön céljainak megfelelően.</p>
+                </div>
+                <div class="card">
+                    <h3>🥗 Táplálkozási Tanácsadás</h3>
+                    <p>Szakértő dietetikusok segítségével érkezz el az ideális testsúlyodhoz és alakodhoz.</p>
+                </div>
+                <div class="card">
+                    <h3>👥 Csoportos Edzések</h3>
+                    <p>Motiváló csoportos foglalkozások, amelyekben szórakoztató és hatékony edzéseket végezhet.</p>
+                </div>
+                <div class="card">
+                    <h3>🏆 Készség Fejlesztés</h3>
+                    <p>Fejleszd képességeidet és érj el új szinteket a fitnesz világában.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- RÓLUNK OLDAL -->
+        <div id="about" class="page">
+            <div class="about-content">
+                <h2>Az ALPACA Fitneszteremről</h2>
+                <p>Az ALPACA Fitneszterem 2015 óta működik, és elkötelezve vagyunk abban, hogy segítsünk az embereknek elérni a fitnesz és egészségügyi céljaikat. Minőségi szolgáltatások és támogató közösség révén több ezer ember élete megváltozott.</p>
+                <p>A mi missziónk az, hogy egy befogadó, motiváló és profi környezetet nyújtsunk, ahol mindenki függetlenül az edzés szintjétől, fejlődhet és elérheti az álmait.</p>
+            </div>
+
+            <div class="cards-container">
+                <div class="card">
+                    <h3>Misszionk</h3>
+                    <p>Elősegíteni az egészséges életmódot és személyes fejlődést magas szintű edzési szolgáltatások révén.</p>
+                </div>
+                <div class="card">
+                    <h3>Vízió</h3>
+                    <p>Az ALPACA az első számú fitneszterem lenni, ahol az emberek elérik legmagasabb potenciáljukat.</p>
+                </div>
+                <div class="card">
+                    <h3>Értékeink</h3>
+                    <p>Dedikáció, integritás, szakértelem és közösség - ezek az értékek vezetik mindennapi munkánkat.</p>
+                </div>
+            </div>
+
+            <div class="about-content">
+                <h2>Csapatunk</h2>
+                <p>Az ALPACA csapata tapasztalt edzőkből, dietetikusokból és fitnessz szakemberekből áll, akik célja az Ön sikere. Minden csapattag továbbképzésben vesz részt, hogy a legújabb módszerek és tudás továbbadása garantált legyen.</p>
+            </div>
+        </div>
+
+        <!-- ÉRTÉKESÍTÉS OLDAL -->
+        <div id="products" class="page">
+            <h2 style="color: var(--primary-color); margin-bottom: 2rem; border-bottom: 3px solid var(--accent-color); padding-bottom: 1rem;">Szolgáltatások és Termékeink</h2>
+
+            <div class="products-grid">
+                <div class="product-card">
+                    <div class="product-image"></div>
+                    <div class="product-info">
+                        <h3>Havi Tagság</h3>
+                        <p>Korlátlan hozzáférés a létesítmények és csoportos edzésekhez.</p>
+                        <div class="price">9.990 Ft</div>
+                        <button class="add-to-cart">Kiválaszt</button>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-image"></div>
+                    <div class="product-info">
+                        <h3>Éves Tagság</h3>
+                        <p>Teljes éves hozzáférés plusz 2 hónap ingyenes időszakkal.</p>
+                        <div class="price">99.900 Ft</div>
+                        <button class="add-to-cart">Kiválaszt</button>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-image"></div>
+                    <div class="product-info">
+                        <h3>Személyi Edzés</h3>
+                        <p>1-1 edzés egy tapasztalt edző vezetésével.</p>
+                        <div class="price">8.000 Ft</div>
+                        <button class="add-to-cart">Kiválaszt</button>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-image"></div>
+                    <div class="product-info">
+                        <h3>Csoportos Edzés</h3>
+                        <p>5-10 fős csoportok vezetett edzésekkel.</p>
+                        <div class="price">3.000 Ft</div>
+                        <button class="add-to-cart">Kiválaszt</button>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-image"></div>
+                    <div class="product-info">
+                        <h3>Táplálkozási Konzultáció</h3>
+                        <p>Személyre szabott diétás terv egy szakmabeli dietetikustól.</p>
+                        <div class="price">15.000 Ft</div>
+                        <button class="add-to-cart">Kiválaszt</button>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-image"></div>
+                    <div class="product-info">
+                        <h3>Teljes Testösszetétel Elemzés</h3>
+                        <p>Mélyreható analízis testédésétről és edzési előrehaladásáról.</p>
+                        <div class="price">5.000 Ft</div>
+                        <button class="add-to-cart">Kiválaszt</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- GALÉRIA OLDAL -->
+        <div id="gallery" class="page">
+            <h2 style="color: var(--primary-color); margin-bottom: 2rem; border-bottom: 3px solid var(--accent-color); padding-bottom: 1rem;">Galéria</h2>
+
+            <div class="gallery-grid">
+                <div class="gallery-item">
+                    <div class="gallery-image"><img src="gkep1.jpg" style="height: 300px; width: 300px;"></div>
+                </div>
+                <div class="gallery-item">
+                    <div class="gallery-image"><img src="gkep2.jpg" style="height: 300px; width: 300px;"></div>
+                </div>
+                <div class="gallery-item">
+                    <div class="gallery-image"><img src="gkep3.jpg" style="height: 300px; width: 300px;"></div>
+                </div>
+                <div class="gallery-item">
+                    <div class="gallery-image"><img src="gkep4.jpg" style="height: 300px; width: 300px;"></div>
+                </div>
+                <div class="gallery-item">
+                    <div class="gallery-image"><img src="gkep5.png" style="height: 300px; width: 300px;"></div>
+                </div>
+                <div class="gallery-item">
+                    <div class="gallery-image"><img src="gkep6.png" style="height: 300px; width: 300px;"></div>
+                </div>
+                <div class="gallery-item">
+                    <div class="gallery-image"><img src="gkep7.png" style="height: 300px; width: 300px;"></div>
+                </div>
+                <div class="gallery-item">
+                    <div class="gallery-image"><img src="gkep8.png" style="height: 300px; width: 300px;"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- KAPCSOLAT OLDAL -->
+        <div id="contact" class="page">
+            <h2 style="color: var(--primary-color); margin-bottom: 2rem; border-bottom: 3px solid var(--accent-color); padding-bottom: 1rem;">Kapcsolat</h2>
+
+            <div class="contact-container">
+                <div class="contact-form">
+                    <h3>Írjon Nekünk</h3>
+                    <form onsubmit="handleFormSubmit(event)">
+                        <div class="form-group">
+                            <label for="name">Név:</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">E-mail:</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Telefon:</label>
+                            <input type="tel" id="phone" name="phone">
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Üzenet:</label>
+                            <textarea id="message" name="message" required></textarea>
+                        </div>
+                        <button type="submit" class="submit-btn">Küldés</button>
+                    </form>
+                </div>
+
+                <div class="contact-info">
+                    <h3>Elérhetőségek</h3>
+                    <div class="info-item">
+                        <strong>Cím:</strong>
+                        <p>Budapest, Fitness utca 42<br>1011 Budapest, Magyarország</p>
+                    </div>
+                    <div class="info-item">
+                        <strong>Telefonszám:</strong>
+                        <p>+36 1 123 4567</p>
+                    </div>
+                    <div class="info-item">
+                        <strong>E-mail:</strong>
+                        <p>info@alpacagym.hu</p>
+                    </div>
+                    <div class="info-item">
+                        <strong>Nyitvatartás:</strong>
+                        <p>Hétfő-Péntek: 06:00 - 22:00<br>
+                        Szombat-Vasárnap: 08:00 - 20:00</p>
+                    </div>
+                    <div class="info-item">
+                        <strong>Közösségi Hálók:</strong>
+                        <p>
+                            Facebook | Instagram | Twitter
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 ALPACA Fitneszterem. Minden jog fenntartva.</p>
+        <p>Készítette: ALPACA Development Team</p>
+    </footer>
+
+    <script>
+        // Oldal váltás
+        function showPage(pageId) {
+            // Összes oldal elrejtése
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(page => page.classList.remove('active'));
+
+            // Kiválasztott oldal megjelenítése
+            const selectedPage = document.getElementById(pageId);
+            if (selectedPage) {
+                selectedPage.classList.add('active');
+            }
+
+            // Hamburger menü bezárása mobilon
+            const hamburger = document.getElementById('hamburger');
+            const nav = document.getElementById('nav');
+            nav.classList.remove('active');
+
+            // Oldal tetejére görgetés
+            window.scrollTo(0, 0);
+        }
+
+        // Hamburger menü funkciója
+        const hamburger = document.getElementById('hamburger');
+        const nav = document.getElementById('nav');
+
+        hamburger.addEventListener('click', () => {
+            nav.classList.toggle('active');
+        });
+
+        // Kapcsolat form kezelés
+        function handleFormSubmit(event) {
+            event.preventDefault();
+            const name = document.getElementById('name').value;
+            alert(`Köszönjük az üzenetét, ${name}! Hamarosan felvesszük veled a kapcsolatot.`);
+            event.target.reset();
+        }
+
+        // Kosár gomb funkciója
+        const addToCartButtons = document.querySelectorAll('.add-to-cart');
+        addToCartButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const productName = this.closest('.product-info').querySelector('h3').textContent;
+                alert(`"${productName}" hozzáadva a kosárhoz!`);
+            });
+        });
+    </script>
+</body>
+</html>
