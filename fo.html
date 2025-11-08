@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ALPACA - Fitneszterem</title>
+    <title>ALPACA - GYM</title>
     <style>
         * {
             margin: 0;
@@ -26,7 +26,6 @@
             line-height: 1.6;
         }
 
-        /* Header és Navigáció */
         header {
             background-color: var(--primary-color);
             padding: 1rem 0;
@@ -50,7 +49,6 @@
             width: auto;
         }
 
-        /* Hamburger Menu */
         .hamburger {
             display: none;
             flex-direction: column;
@@ -99,7 +97,6 @@
             width: 100%;
         }
 
-        /* Main Container */
         main {
             max-width: 1200px;
             margin: 0 auto;
@@ -107,7 +104,6 @@
             min-height: calc(100vh - 200px);
         }
 
-        /* Oldal elrejtése */
         .page {
             display: none;
         }
@@ -166,7 +162,6 @@
             box-shadow: 0 5px 15px rgba(243, 156, 18, 0.4);
         }
 
-        /* Kártya elrendezés */
         .cards-container {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -192,7 +187,6 @@
             margin-bottom: 1rem;
         }
 
-        /* About Us */
         .about-content {
             background: white;
             padding: 2rem;
@@ -213,7 +207,6 @@
             line-height: 1.8;
         }
 
-        /* Értékesítés oldal */
         .products-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -275,7 +268,6 @@
             background-color: #e67e22;
         }
 
-        /* Galéria */
         .gallery-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -305,7 +297,6 @@
             transform: scale(1.1);
         }
 
-        /* Kapcsolat oldal */
         .contact-container {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -386,7 +377,6 @@
             color: var(--accent-color);
         }
 
-        /* Footer */
         footer {
             background-color: var(--primary-color);
             color: white;
@@ -399,7 +389,6 @@
             margin-bottom: 0.5rem;
         }
 
-        /* Reszponzív design */
         @media (max-width: 768px) {
             .hamburger {
                 display: flex;
@@ -575,7 +564,7 @@
 
             <div class="products-grid">
                 <div class="product-card">
-                    <div class="product-image"></div>
+                    <div class="product-image"><img src="onemonthgym.png" style="width: 300px; height: 220px;"></div>
                     <div class="product-info">
                         <h3>Havi Tagság</h3>
                         <p>Korlátlan hozzáférés a létesítmények és csoportos edzésekhez.</p>
@@ -585,7 +574,7 @@
                 </div>
 
                 <div class="product-card">
-                    <div class="product-image"></div>
+                    <div class="product-image"><img src="evestagsag.jpg" style="width: 300px; height: 220px;"></div>
                     <div class="product-info">
                         <h3>Éves Tagság</h3>
                         <p>Teljes éves hozzáférés plusz 2 hónap ingyenes időszakkal.</p>
@@ -595,7 +584,7 @@
                 </div>
 
                 <div class="product-card">
-                    <div class="product-image"></div>
+                    <div class="product-image"><img src="coaching.jpg" style="width: 300px; height: 220px;"></div>
                     <div class="product-info">
                         <h3>Személyi Edzés</h3>
                         <p>1-1 edzés egy tapasztalt edző vezetésével.</p>
@@ -605,7 +594,7 @@
                 </div>
 
                 <div class="product-card">
-                    <div class="product-image"></div>
+                    <div class="product-image"><img src="csoportose.jpg" style="width: 300px; height: 220px;"></div>
                     <div class="product-info">
                         <h3>Csoportos Edzés</h3>
                         <p>5-10 fős csoportok vezetett edzésekkel.</p>
@@ -615,21 +604,11 @@
                 </div>
 
                 <div class="product-card">
-                    <div class="product-image"></div>
+                    <div class="product-image"><img src="eatingh.jpg" style="width: 300px; height: 220px;"></div>
                     <div class="product-info">
                         <h3>Táplálkozási Konzultáció</h3>
                         <p>Személyre szabott diétás terv egy szakmabeli dietetikustól.</p>
                         <div class="price">15.000 Ft</div>
-                        <button class="add-to-cart">Kiválaszt</button>
-                    </div>
-                </div>
-
-                <div class="product-card">
-                    <div class="product-image"></div>
-                    <div class="product-info">
-                        <h3>Teljes Testösszetétel Elemzés</h3>
-                        <p>Mélyreható analízis testédésétről és edzési előrehaladásáról.</p>
-                        <div class="price">5.000 Ft</div>
                         <button class="add-to-cart">Kiválaszt</button>
                     </div>
                 </div>
